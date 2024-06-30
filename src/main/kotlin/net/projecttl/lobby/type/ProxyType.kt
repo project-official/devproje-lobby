@@ -1,4 +1,4 @@
-package net.projecttl.type
+package net.projecttl.lobby.type
 
 enum class ProxyType(val type: String) {
 	NONE("none"),

@@ -1,7 +1,7 @@
-package net.projecttl
+package net.projecttl.net.projecttl.lobby
 
-import net.projecttl.type.ProxyType
-import net.projecttl.util.DelegateGenerator
+import net.projecttl.lobby.type.ProxyType
+import net.projecttl.lobby.util.DelegateGenerator
 import java.io.File
 import java.util.*
 import kotlin.reflect.KProperty
@@ -18,14 +18,15 @@ object Config {
 	}
 
 	private fun parseProxyType(ref: String) = when (ref) {
-		ProxyType.NONE.type 	  -> ProxyType.NONE
+		ProxyType.NONE.type       -> ProxyType.NONE
 		ProxyType.VELOCITY.type   -> ProxyType.VELOCITY
 		ProxyType.BUNGEECORD.type -> ProxyType.BUNGEECORD
-		else 			  -> throw IllegalStateException("$ref is not a ProxyType")
+		else                      -> throw IllegalStateException("$ref is not a ProxyType")
 	}
 
 	val host: String by useConfig()
 	val velocity_secret: String by useConfig()
+	val level_name: String by useConfig()
 
 	private val port: String by useConfig()
 	private val proxy_type: String by useConfig()
@@ -42,7 +43,7 @@ private class ConfigDelegate<T> : DelegateGenerator<T> {
 	override operator fun getValue(thisRef: Any, property: KProperty<*>): T = props[property.name] as T
 
 	init {
-		val file = File("./config.properties")
+		val file = File("config.properties")
 		if (!file.exists()) {
 			val stream = javaClass.getResourceAsStream("/config.properties")!!
 			stream.use { buf ->

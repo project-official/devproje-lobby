@@ -1,4 +1,4 @@
-package net.projecttl.util
+package net.projecttl.lobby.util
 
 import java.util.Properties
 import kotlin.reflect.KProperty
