@@ -2,6 +2,7 @@
 .gradle/
 build/
 world/
+config/
 world*
 
 !gradle/wrapper/gradle-wrapper.jar

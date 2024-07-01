@@ -2,6 +2,7 @@ package net.projecttl.lobby.task
 
 import kotlinx.coroutines.*
 import net.projecttl.lobby.instance
+import net.projecttl.lobby.service.TabListService
 import net.projecttl.lobby.util.toMini
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -10,6 +11,7 @@ object TabList {
 		GlobalScope.launch {
 			while (isActive) {
 				val rt = Runtime.getRuntime()
+				val service = TabListService()
 				instance.sendPlayerListHeaderAndFooter(
 					("\n <gradient:#00ffff:#0091ff><bold>PROJECT OFFICIAL SERVER \n" +
 						" <reset><white>프젝 오피셜 로비서버에 오신걸 환영합니다! \n").toMini(),

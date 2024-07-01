@@ -12,7 +12,6 @@ import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.instance.LightingChunk
 import net.minestom.server.instance.anvil.AnvilLoader
 import net.projecttl.lobby.util.asString
-import net.projecttl.net.projecttl.lobby.Config
 
 object Listener {
 	fun run(node: EventNode<Event>) {

@@ -1,7 +1,9 @@
 package net.projecttl.lobby
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.kyori.adventure.key.Key
 import net.minestom.server.MinecraftServer
 import net.minestom.server.extras.MojangAuth
@@ -16,20 +18,42 @@ import net.projecttl.lobby.handler.CampfireHandler
 import net.projecttl.lobby.handler.SignHandler
 import net.projecttl.lobby.handler.SkullHandler
 import net.projecttl.lobby.task.TabList
+import net.projecttl.lobby.type.DatabaseType
 import net.projecttl.lobby.type.ProxyType
-import net.projecttl.net.projecttl.lobby.Config
+import org.jetbrains.exposed.sql.Database
 import org.slf4j.Logger
+import java.io.File
 
 lateinit var logger: Logger
+lateinit var database: Database
 lateinit var instance: InstanceContainer
 
 suspend fun main() {
 	val kernel = Kernel()
 	logger = kernel.logger
 
+	if (Config.dbType == DatabaseType.SQLITE) {
+		val config = File("config")
+		if (!config.exists()) {
+			config.mkdir()
+			val configFile = File("config", "data.db")
+
+			withContext(Dispatchers.IO) {
+				configFile.createNewFile()
+			}
+		}
+	}
+
 	val server = MinecraftServer.init()
 	val commands = MinecraftServer.getCommandManager()
 	val handler = MinecraftServer.getGlobalEventHandler()
+
+	database = Database.connect(
+		url = Config.database_url,
+		driver = Config.dbType.driver,
+		user = Config.database_username,
+		password = Config.database_password
+	)
 
 	when (Config.proxyType) {
 		ProxyType.NONE       -> {}

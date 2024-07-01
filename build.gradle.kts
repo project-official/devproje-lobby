@@ -25,6 +25,7 @@ repositories {
 dependencies {
 	implementation(kotlin("stdlib"))
 	implementation(kotlin("reflect"))
+	implementation("org.xerial:sqlite-jdbc:3.46.0.0")
 	implementation("org.jetbrains.exposed:exposed-core:0.50.1")
 	implementation("org.jetbrains.exposed:exposed-jdbc:0.50.1")
 	implementation("net.minestom:minestom-snapshots:8ea7760e6a")

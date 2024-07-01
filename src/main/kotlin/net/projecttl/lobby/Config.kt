@@ -1,5 +1,6 @@
-package net.projecttl.net.projecttl.lobby
+package net.projecttl.lobby
 
+import net.projecttl.lobby.type.DatabaseType
 import net.projecttl.lobby.type.ProxyType
 import net.projecttl.lobby.util.DelegateGenerator
 import java.io.File
@@ -24,17 +25,30 @@ object Config {
 		else                      -> throw IllegalStateException("$ref is not a ProxyType")
 	}
 
+	private fun parseDBType(ref: String) = when (ref) {
+		DatabaseType.SQLITE.name.lowercase()  -> DatabaseType.SQLITE
+		DatabaseType.MARIADB.name.lowercase() -> DatabaseType.MARIADB
+		else				      -> throw IllegalStateException("$ref is not a DatabaseType")
+	}
+
 	val host: String by useConfig()
+	private val port: String by useConfig()
+	val serverPort = parseInt(port)
+
+	private val proxy_type: String by useConfig()
+	val proxyType = parseProxyType(proxy_type)
 	val velocity_secret: String by useConfig()
+	private val online_mode: String by useConfig()
+	val onlineMode = parseBool(online_mode)
+
 	val level_name: String by useConfig()
 
-	private val port: String by useConfig()
-	private val proxy_type: String by useConfig()
-	private val online_mode: String by useConfig()
+	private val database_type: String by useConfig()
+	val dbType = parseDBType(database_type)
 
-	val serverPort = parseInt(port)
-	val onlineMode = parseBool(online_mode)
-	val proxyType = parseProxyType(proxy_type)
+	val database_url: String by useConfig()
+	val database_username: String by useConfig()
+	val database_password: String by useConfig()
 }
 
 @Suppress("UNCHECKED_CAST")
