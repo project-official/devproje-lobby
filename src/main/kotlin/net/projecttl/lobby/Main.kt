@@ -9,10 +9,13 @@ import net.minestom.server.extras.bungee.BungeeCordProxy
 import net.minestom.server.extras.velocity.VelocityProxy
 import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
+import net.projecttl.lobby.command.Fly
+import net.projecttl.lobby.command.Teleport
 import net.projecttl.lobby.core.Kernel
 import net.projecttl.lobby.handler.CampfireHandler
 import net.projecttl.lobby.handler.SignHandler
 import net.projecttl.lobby.handler.SkullHandler
+import net.projecttl.lobby.task.TabList
 import net.projecttl.lobby.type.ProxyType
 import net.projecttl.net.projecttl.lobby.Config
 import org.slf4j.Logger
@@ -25,6 +28,9 @@ suspend fun main() {
 	logger = kernel.logger
 
 	val server = MinecraftServer.init()
+	val commands = MinecraftServer.getCommandManager()
+	val handler = MinecraftServer.getGlobalEventHandler()
+
 	when (Config.proxyType) {
 		ProxyType.NONE       -> {}
 		ProxyType.VELOCITY   -> {
@@ -43,6 +49,14 @@ suspend fun main() {
 
 	if (Config.onlineMode && !BungeeCordProxy.isEnabled() && !VelocityProxy.isEnabled()) {
 		MojangAuth.init()
+	}
+
+	Listener.run(handler)
+	TabList.run()
+
+	with(commands) {
+		register(Fly)
+		register(Teleport)
 	}
 
 	MinecraftServer.getBlockManager().apply {

@@ -1,31 +1,30 @@
 package net.projecttl.lobby
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.coordinate.Pos
+import net.minestom.server.entity.GameMode
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.player.AsyncPlayerConfigurationEvent
 import net.minestom.server.event.player.PlayerCommandEvent
+import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
-import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.instance.LightingChunk
 import net.minestom.server.instance.anvil.AnvilLoader
-import net.minestom.server.utils.NamespaceID
-import net.minestom.server.world.DimensionType
 import net.projecttl.lobby.util.asString
 import net.projecttl.net.projecttl.lobby.Config
 
 object Listener {
 	fun run(node: EventNode<Event>) {
-		val dim = DimensionType.builder()
-			.height(416)
-			.logicalHeight(200)
-			.minY(-64)
-			.build()
-
-		MinecraftServer.getDimensionTypeRegistry().register(NamespaceID.from("fullbright"), dim)
+		val spawnPoint = Pos(0.5, 41.0, 0.5)
 		instance = MinecraftServer.getInstanceManager().createInstanceContainer()
 
 		instance.chunkLoader = AnvilLoader(Config.level_name)
 		instance.setChunkSupplier(::LightingChunk)
+
+		node.addListener(AsyncPlayerConfigurationEvent::class.java) { event ->
+			event.spawningInstance = instance
+		}
 
 		node.addListener(PlayerCommandEvent::class.java) { event ->
 			val name = event.player.name.asString()
@@ -33,7 +32,15 @@ object Listener {
 		}
 
 		node.addListener(PlayerSpawnEvent::class.java) { event ->
-			event.player.sendMessage("${event.player.displayName}")
+			event.player.teleport(spawnPoint)
+			event.player.gameMode = GameMode.ADVENTURE
+			event.player.sendMessage("${event.player.username} is joined the server")
+		}
+
+		node.addListener(PlayerMoveEvent::class.java) { event ->
+			if (event.player.position.y <= 20) {
+				event.player.teleport(spawnPoint)
+			}
 		}
 	}
 }
