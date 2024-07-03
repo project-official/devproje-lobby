@@ -25,6 +25,7 @@ class ServerListService(database: Database) {
 		val name = varchar("name", 50)
 		val description = text("description").nullable()
 		val head = varchar("head", 50).default("DEV_IO")
+		val headUUID = uuid("head_uuid").default(UUID.fromString("d5c1b63b-4554-48cc-9322-44cae6193b0a"))
 		val server = varchar("server", 30).uniqueIndex()
 
 		override val primaryKey = PrimaryKey(id, name = "PK_ServerList_ID")

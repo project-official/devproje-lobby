@@ -71,10 +71,10 @@ object Listener {
 					if (progress > 1.0) {
 						progress = 0F
 
-						if (Config.bossBar.size - 1 <= page) {
-							page = 0
+						page = if (Config.bossBar.size - 1 <= page) {
+							0
 						} else {
-							page += 1
+							page + 1
 						}
 					}
 
