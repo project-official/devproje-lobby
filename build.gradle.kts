@@ -61,7 +61,3 @@ tasks {
 		useJUnitPlatform()
 	}
 }
-
-kotlin {
-	jvmToolchain(21)
-}
