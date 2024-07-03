@@ -38,7 +38,7 @@ object Listener {
 
 		node.addListener(PlayerMoveEvent::class.java) { event ->
 			if (event.player.position.y <= 20) {
-				event.player.teleport(spawnPoint)
+				event.player.teleport(Config.defaultSpawn)
 			}
 		}
 	}

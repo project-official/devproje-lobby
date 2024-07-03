@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class TabListService {
+class TabListService(database: Database) {
 	object TabListTable : Table("tab_list") {
 		val index = integer("index")
 		val content = text("content")
@@ -14,15 +14,19 @@ class TabListService {
 	}
 
 	init {
-		transaction {
+		transaction(database) {
 			SchemaUtils.create(TabListTable)
 		}
 	}
 
 	suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO) { block() }
 
-	private suspend fun index(header: Boolean = true): Int = dbQuery {
-		TabListTable.select(TabListTable.index).where { TabListTable.header eq header }.last()[TabListTable.index]
+	suspend fun index(header: Boolean = true): Int = dbQuery {
+		try {
+			TabListTable.select(TabListTable.index).where { TabListTable.header eq header }.last()[TabListTable.index] + 1
+		} catch (ex: Exception) {
+			0
+		}
 	}
 
 	private suspend fun refresh(start: Int, n: Int) = dbQuery {
@@ -55,12 +59,20 @@ class TabListService {
 	}
 
 	suspend fun setHeader(index: Int, content: String): Unit = dbQuery {
+		if (!exist(index)) {
+			throw NullPointerException("Content not found")
+		}
+
 		TabListTable.update({ TabListTable.index eq index and(TabListTable.header eq true) }) {
 			it[TabListTable.content] = content
 		}
 	}
 
 	suspend fun setFooter(index: Int, content: String): Unit = dbQuery {
+		if (!exist(index, false)) {
+			throw NullPointerException("Content not found")
+		}
+
 		TabListTable.update({ TabListTable.index eq index and(TabListTable.header eq false) }) {
 			it[TabListTable.content] = content
 		}
@@ -79,7 +91,7 @@ class TabListService {
 	}
 
 	suspend fun addFooter(content: String): Unit = dbQuery {
-		val index = index()
+		val index = index(false)
 		if (exist(index, false)) {
 			throw IllegalStateException("$index line current exist")
 		}
@@ -97,10 +109,7 @@ class TabListService {
 		}
 
 		if (empty) {
-			TabListTable.update({ TabListTable.index eq index and (TabListTable.header eq true) }) {
-				it[content] = "\n"
-			}
-
+			setHeader(index, "")
 			return@dbQuery
 		}
 
@@ -109,15 +118,12 @@ class TabListService {
 	}
 
 	suspend fun delFooter(index: Int, empty: Boolean = false): Unit = dbQuery {
-		if (!exist(index)) {
+		if (!exist(index, false)) {
 			throw NullPointerException("$index line current not exist")
 		}
 
 		if (empty) {
-			TabListTable.update({ TabListTable.index eq index and (TabListTable.header eq false) }) {
-				it[content] = "\n"
-			}
-
+			setFooter(index, "")
 			return@dbQuery
 		}
 

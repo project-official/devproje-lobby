@@ -11,8 +11,10 @@ object Fly : Command("fly") {
 				return@setDefaultExecutor sender.sendMessage("<red>You're not player!".toMini())
 			}
 
-			sender.isAllowFlying = true
-			sender.isFlying = !sender.isAllowFlying
+			val value = !sender.isAllowFlying
+
+			sender.isAllowFlying = value
+			sender.isFlying = value
 		}
 	}
 }

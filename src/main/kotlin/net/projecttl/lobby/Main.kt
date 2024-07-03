@@ -12,11 +12,13 @@ import net.minestom.server.extras.velocity.VelocityProxy
 import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
 import net.projecttl.lobby.command.Fly
+import net.projecttl.lobby.command.TabListC
 import net.projecttl.lobby.command.Teleport
 import net.projecttl.lobby.core.Kernel
 import net.projecttl.lobby.handler.CampfireHandler
 import net.projecttl.lobby.handler.SignHandler
 import net.projecttl.lobby.handler.SkullHandler
+import net.projecttl.lobby.service.TabListService
 import net.projecttl.lobby.task.TabList
 import net.projecttl.lobby.type.DatabaseType
 import net.projecttl.lobby.type.ProxyType
@@ -27,6 +29,7 @@ import java.io.File
 lateinit var logger: Logger
 lateinit var database: Database
 lateinit var instance: InstanceContainer
+lateinit var tabListService: TabListService
 
 suspend fun main() {
 	val kernel = Kernel()
@@ -55,6 +58,8 @@ suspend fun main() {
 		password = Config.database_password
 	)
 
+	tabListService = TabListService(database)
+
 	when (Config.proxyType) {
 		ProxyType.NONE       -> {}
 		ProxyType.VELOCITY   -> {
@@ -80,6 +85,7 @@ suspend fun main() {
 
 	with(commands) {
 		register(Fly)
+		register(TabListC)
 		register(Teleport)
 	}
 
