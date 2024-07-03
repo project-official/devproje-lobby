@@ -36,7 +36,7 @@ class TabListService(database: Database) {
 	}
 
 	private suspend fun exist(index: Int, header: Boolean = true): Boolean = dbQuery {
-		val res = TabListTable.select(TabListTable.index).where { TabListTable.index eq index and(TabListTable.header eq header) }.singleOrNull()
+		val res = TabListTable.select(TabListTable.index).where { TabListTable.index eq index and (TabListTable.header eq header) }.singleOrNull()
 		return@dbQuery res != null
 	}
 
@@ -63,7 +63,7 @@ class TabListService(database: Database) {
 			throw NullPointerException("Content not found")
 		}
 
-		TabListTable.update({ TabListTable.index eq index and(TabListTable.header eq true) }) {
+		TabListTable.update({ TabListTable.index eq index and (TabListTable.header eq true) }) {
 			it[TabListTable.content] = content
 		}
 	}
@@ -73,7 +73,7 @@ class TabListService(database: Database) {
 			throw NullPointerException("Content not found")
 		}
 
-		TabListTable.update({ TabListTable.index eq index and(TabListTable.header eq false) }) {
+		TabListTable.update({ TabListTable.index eq index and (TabListTable.header eq false) }) {
 			it[TabListTable.content] = content
 		}
 	}
@@ -113,7 +113,7 @@ class TabListService(database: Database) {
 			return@dbQuery
 		}
 
-		TabListTable.deleteWhere { TabListTable.index eq index and(header eq true) }
+		TabListTable.deleteWhere { TabListTable.index eq index and (header eq true) }
 		refresh(index, index())
 	}
 
@@ -127,6 +127,6 @@ class TabListService(database: Database) {
 			return@dbQuery
 		}
 
-		TabListTable.deleteWhere { TabListTable.index eq index and(header eq false) }
+		TabListTable.deleteWhere { TabListTable.index eq index and (header eq false) }
 	}
 }

@@ -1,6 +1,6 @@
 package net.projecttl.lobby.util
 
-import java.util.Properties
+import java.util.*
 import kotlin.reflect.KProperty
 
 interface DelegateGenerator<T> {

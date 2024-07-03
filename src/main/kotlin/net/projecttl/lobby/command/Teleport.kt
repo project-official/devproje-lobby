@@ -16,8 +16,8 @@ object Teleport : Command("teleport", "tp") {
 
 	private fun fallback(sender: CommandSender, reason: ReasonType) {
 		when (reason) {
-			ReasonType.NO_ARGUMENT 	 -> sender.sendMessage("<red>Command must be contains x, y, z values</red>".toMini())
-			ReasonType.NO_PLAYER   	 -> sender.sendMessage("<red>You must be a player to teleport command!</red>".toMini())
+			ReasonType.NO_ARGUMENT   -> sender.sendMessage("<red>Command must be contains x, y, z values</red>".toMini())
+			ReasonType.NO_PLAYER     -> sender.sendMessage("<red>You must be a player to teleport command!</red>".toMini())
 			ReasonType.NO_PERMISSION -> {}
 		}
 	}

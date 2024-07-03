@@ -70,6 +70,7 @@ suspend fun main() {
 				logger.info("Velocity secret not set, ignore it")
 			}
 		}
+
 		ProxyType.BUNGEECORD -> {
 			BungeeCordProxy.enable()
 			logger.info("Enabled bungeecord forward option")

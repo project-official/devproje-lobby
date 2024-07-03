@@ -14,9 +14,9 @@ object Config {
 	private fun parseInt(ref: String) = ref.toIntOrNull() ?: 25565
 
 	private fun parseBool(ref: String) = when (ref) {
-		"true" 	-> true
+		"true"  -> true
 		"false" -> false
-		else 	-> throw IllegalStateException("$ref is not a Boolean")
+		else    -> throw IllegalStateException("$ref is not a Boolean")
 	}
 
 	private fun parseProxyType(ref: String) = when (ref) {
@@ -29,7 +29,7 @@ object Config {
 	private fun parseDBType(ref: String) = when (ref) {
 		DatabaseType.SQLITE.name.lowercase()  -> DatabaseType.SQLITE
 		DatabaseType.MARIADB.name.lowercase() -> DatabaseType.MARIADB
-		else				      -> throw IllegalStateException("$ref is not a DatabaseType")
+		else                                  -> throw IllegalStateException("$ref is not a DatabaseType")
 	}
 
 	private fun parsePos(ref: String): Pos {

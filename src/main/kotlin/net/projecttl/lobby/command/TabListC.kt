@@ -5,7 +5,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
-import net.projecttl.lobby.service.TabListService.TabListTable.index
 import net.projecttl.lobby.tabListService
 import net.projecttl.lobby.type.TabListContent
 import net.projecttl.lobby.util.formatter
