@@ -27,14 +27,16 @@ object Config {
 	}
 
 	private fun parseDBType(ref: String) = when (ref) {
-		DatabaseType.SQLITE.name.lowercase()  -> DatabaseType.SQLITE
-		DatabaseType.MARIADB.name.lowercase() -> DatabaseType.MARIADB
-		else                                  -> throw IllegalStateException("$ref is not a DatabaseType")
+		DatabaseType.MYSQL.name.lowercase()      -> DatabaseType.MYSQL
+		DatabaseType.SQLITE.name.lowercase()     -> DatabaseType.SQLITE
+		DatabaseType.MARIADB.name.lowercase()    -> DatabaseType.MARIADB
+		DatabaseType.POSTGRESQL.name.lowercase() -> DatabaseType.POSTGRESQL
+		else                                     -> throw IllegalStateException("$ref is not a DatabaseType")
 	}
 
 	private fun parsePos(ref: String): Pos {
 		val split = ref.split(";")
-		if (split.size == 3 || split.size == 5) {
+		if (split.size != 3 && split.size != 5) {
 			throw NullPointerException("split format must be to {x};{y};{z}; or {x};{y};{z};{pitch};{yaw};")
 		}
 
@@ -52,6 +54,8 @@ object Config {
 		return Pos(x, y, z)
 	}
 
+	private fun parseBossBar(ref: String) = ref.split(";")
+
 	val host: String by useConfig()
 	private val port: String by useConfig()
 	val serverPort = parseInt(port)
@@ -65,6 +69,8 @@ object Config {
 	val level_name: String by useConfig()
 	private val default_spawn: String by useConfig()
 	val defaultSpawn = parsePos(default_spawn)
+	private val boss_bar: String by useConfig()
+	val bossBar = parseBossBar(boss_bar)
 
 	private val database_type: String by useConfig()
 	val dbType = parseDBType(database_type)

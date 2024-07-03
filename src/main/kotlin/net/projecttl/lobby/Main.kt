@@ -18,6 +18,7 @@ import net.projecttl.lobby.core.Kernel
 import net.projecttl.lobby.handler.CampfireHandler
 import net.projecttl.lobby.handler.SignHandler
 import net.projecttl.lobby.handler.SkullHandler
+import net.projecttl.lobby.service.ServerListService
 import net.projecttl.lobby.service.TabListService
 import net.projecttl.lobby.task.TabList
 import net.projecttl.lobby.type.DatabaseType
@@ -30,6 +31,7 @@ lateinit var logger: Logger
 lateinit var database: Database
 lateinit var instance: InstanceContainer
 lateinit var tabListService: TabListService
+lateinit var serverListService: ServerListService
 
 suspend fun main() {
 	val kernel = Kernel()
@@ -59,6 +61,7 @@ suspend fun main() {
 	)
 
 	tabListService = TabListService(database)
+	serverListService = ServerListService(database)
 
 	when (Config.proxyType) {
 		ProxyType.NONE       -> {}
