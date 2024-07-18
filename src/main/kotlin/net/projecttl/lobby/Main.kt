@@ -18,7 +18,6 @@ import net.projecttl.lobby.core.Kernel
 import net.projecttl.lobby.handler.CampfireHandler
 import net.projecttl.lobby.handler.SignHandler
 import net.projecttl.lobby.handler.SkullHandler
-import net.projecttl.lobby.service.ServerListService
 import net.projecttl.lobby.service.TabListService
 import net.projecttl.lobby.task.TabList
 import net.projecttl.lobby.type.DatabaseType
@@ -31,7 +30,6 @@ lateinit var logger: Logger
 lateinit var database: Database
 lateinit var instance: InstanceContainer
 lateinit var tabListService: TabListService
-lateinit var serverListService: ServerListService
 
 suspend fun main() {
 	val kernel = Kernel()
@@ -49,59 +47,21 @@ suspend fun main() {
 		}
 	}
 
-	val server = MinecraftServer.init()
-	val commands = MinecraftServer.getCommandManager()
-	val handler = MinecraftServer.getGlobalEventHandler()
-
-	database = Database.connect(
-		url = Config.database_url,
-		driver = Config.dbType.driver,
-		user = Config.database_username,
-		password = Config.database_password
-	)
-
+	database = kernel.database
 	tabListService = TabListService(database)
-	serverListService = ServerListService(database)
 
-	when (Config.proxyType) {
-		ProxyType.NONE       -> {}
-		ProxyType.VELOCITY   -> {
-			if (Config.velocity_secret.isNotEmpty()) {
-				VelocityProxy.enable(Config.velocity_secret)
-				logger.info("Enabled velocity forward option")
-			} else {
-				logger.info("Velocity secret not set, ignore it")
-			}
-		}
-
-		ProxyType.BUNGEECORD -> {
-			BungeeCordProxy.enable()
-			logger.info("Enabled bungeecord forward option")
-		}
-	}
-
-	if (Config.onlineMode && !BungeeCordProxy.isEnabled() && !VelocityProxy.isEnabled()) {
-		MojangAuth.init()
-	}
-
-	Listener.run(handler)
+	Listener.run(kernel.handler)
 	TabList.run()
 
-	with(commands) {
+	with(kernel.commands) {
 		register(Fly)
 		register(TabListC)
 		register(Teleport)
 	}
 
-	MinecraftServer.getBlockManager().apply {
-		registerHandler(NamespaceID.from(Key.key("minecraft:sign"))) { SignHandler() }
-		registerHandler(NamespaceID.from(Key.key("minecraft:skull"))) { SkullHandler() }
-		registerHandler(NamespaceID.from(Key.key("minecraft:campfire"))) { CampfireHandler() }
-	}
-
 	coroutineScope {
 		launch {
-			server.start(Config.host, Config.serverPort)
+			kernel.server.start(Config.host, Config.serverPort)
 		}
 	}
 
