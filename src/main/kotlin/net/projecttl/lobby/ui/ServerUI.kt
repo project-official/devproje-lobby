@@ -5,6 +5,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.entity.Player
 import net.minestom.server.entity.PlayerSkin
 import net.minestom.server.event.Event
@@ -27,10 +32,12 @@ private class ItemData(val item: ItemStack, val exec: (Player) -> Unit)
 // Server List
 // TODO: create server list for use database
 @OptIn(DelicateCoroutinesApi::class)
-private val default = ItemData(
-	ItemStack.builder(Material.PLAYER_HEAD).apply {
+private val default = ItemData(ItemStack.builder(Material.PLAYER_HEAD).apply {
 	set(ItemComponent.ITEM_NAME, "<aqua>프젝 놀이터".toMini())
 	set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUsername("Project_IO")!!))
+	lore(listOf(
+		"<yellow>Comming Soon!".toMini()
+	))
 }.build()) {
 	GlobalScope.launch {
 		var bar: BossBar
@@ -79,7 +86,11 @@ private val default = ItemData(
 private val gonnyon = ItemData(
 	ItemStack.builder(Material.PLAYER_HEAD).apply {
 		set(ItemComponent.ITEM_NAME, "<green>곤뇬 야생서버".toMini())
-		set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUsername("EG_LEE")!!))
+		set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUuid("94dd9aea-fc4f-4ee5-a592-a7ee1ab10b4d")!!))
+		lore(listOf(
+			"<green>7/26/2024 오후 3시 오픈예정".toMini(),
+			"<yellow>Comming Soon!".toMini()
+		))
 	}.build()) {
 	GlobalScope.launch {
 		var bar: BossBar
@@ -127,7 +138,12 @@ private val discord = ItemData(ItemStack.builder(Material.PLAYER_HEAD).apply {
 	set(ItemComponent.ITEM_NAME, "<color:#7289DA>쪼의 평범한 디스코드 서버".toMini())
 	set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUsername("wh64")!!))
 }.build()) {
-	it.sendMessage("<color:#7289DA>쪼의 평화로운 디스코드 서버: <yellow>https://discord.gg/FpJCWv45FV".toMini())
+	it.sendMessage("<color:#7289DA>쪼의 평화로운 디스코드 서버: ".toMini().append(
+		Component.text("https://discord.gg/FpJCWv45FV", NamedTextColor.YELLOW)
+			.decoration(TextDecoration.UNDERLINED, true)
+			.hoverEvent(HoverEvent.showText(Component.text("링크를 클릭하여 서버에 접속해 보세요!")))
+			.clickEvent(ClickEvent.openUrl("https://discord.gg/FpJCWv45FV"))
+	))
 	it.closeInventory()
 }
 
