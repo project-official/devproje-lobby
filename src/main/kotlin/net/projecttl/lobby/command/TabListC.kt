@@ -5,6 +5,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
+import net.minestom.server.entity.Player
 import net.projecttl.lobby.tabListService
 import net.projecttl.lobby.type.TabListContent
 import net.projecttl.lobby.util.formatter
@@ -47,6 +48,12 @@ object TabListC : Command("tablist", "tl") {
 		val emptyArgument = ArgumentType.Boolean("empty")
 
 		addSyntax({ sender, ctx ->
+			if (sender is Player) {
+				if (sender.username != "WH64") {
+					return@addSyntax
+				}
+			}
+
 			GlobalScope.launch {
 				val type = ctx.get(typeArgument)
 				val header = tabListService.getHeader()
@@ -61,6 +68,12 @@ object TabListC : Command("tablist", "tl") {
 		}, getArgument, typeArgument)
 
 		addSyntax({ sender, ctx ->
+			if (sender is Player) {
+				if (sender.username != "WH64") {
+					return@addSyntax
+				}
+			}
+
 			GlobalScope.launch {
 				val type = ctx.get(typeArgument)
 				val index = ctx.get(indexArgument)
@@ -83,6 +96,12 @@ object TabListC : Command("tablist", "tl") {
 		}, setArgument, typeArgument, indexArgument, contentArgument)
 
 		addSyntax({ sender, ctx ->
+			if (sender is Player) {
+				if (sender.username != "WH64") {
+					return@addSyntax
+				}
+			}
+
 			GlobalScope.launch {
 				val type = ctx.get(typeArgument)
 				val content = ctx.get(contentArgument)
@@ -99,6 +118,12 @@ object TabListC : Command("tablist", "tl") {
 		}, addArgument, typeArgument, contentArgument)
 
 		addSyntax({ sender, ctx ->
+			if (sender is Player) {
+				if (sender.username != "WH64") {
+					return@addSyntax
+				}
+			}
+
 			GlobalScope.launch {
 				val type = ctx.get(typeArgument)
 				val index = ctx.get(indexArgument)

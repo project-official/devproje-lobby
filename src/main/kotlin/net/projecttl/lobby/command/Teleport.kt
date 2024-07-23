@@ -18,7 +18,7 @@ object Teleport : Command("teleport", "tp") {
 		when (reason) {
 			ReasonType.NO_ARGUMENT   -> sender.sendMessage("<red>Command must be contains x, y, z values</red>".toMini())
 			ReasonType.NO_PLAYER     -> sender.sendMessage("<red>You must be a player to teleport command!</red>".toMini())
-			ReasonType.NO_PERMISSION -> {}
+			ReasonType.NO_PERMISSION -> sender.sendMessage("<red>You're not server manager</red>".toMini())
 		}
 	}
 
@@ -36,6 +36,10 @@ object Teleport : Command("teleport", "tp") {
 		addSyntax({ sender, ctx ->
 			if (sender !is Player) {
 				return@addSyntax fallback(sender, ReasonType.NO_PLAYER)
+			}
+
+			if (sender.username != "WH64") {
+				return@addSyntax fallback(sender, ReasonType.NO_PERMISSION)
 			}
 
 			val x = ctx.get(argX) ?: return@addSyntax fallback(sender, ReasonType.NO_ARGUMENT)
