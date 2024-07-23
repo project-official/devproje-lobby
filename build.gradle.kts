@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "net.projecttl"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 kotlin {
 	compilerOptions {
@@ -29,8 +29,9 @@ dependencies {
 	implementation("org.xerial:sqlite-jdbc:3.46.0.0")
 	implementation("org.postgresql:postgresql:42.7.3")
 	implementation("com.mysql:mysql-connector-j:9.0.0")
-	implementation("org.jetbrains.exposed:exposed-core:0.50.1")
-	implementation("org.jetbrains.exposed:exposed-jdbc:0.50.1")
+	implementation("com.google.guava:guava:33.2.1-jre")
+	implementation("org.jetbrains.exposed:exposed-core:0.52.0")
+	implementation("org.jetbrains.exposed:exposed-jdbc:0.52.0")
 	implementation("net.minestom:minestom-snapshots:8ea7760e6a")
 	implementation("org.mariadb.jdbc:mariadb-java-client:3.4.0")
 	implementation("net.kyori:adventure-text-minimessage:4.17.0")

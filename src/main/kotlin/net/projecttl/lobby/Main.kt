@@ -22,6 +22,7 @@ import net.projecttl.lobby.service.TabListService
 import net.projecttl.lobby.task.TabList
 import net.projecttl.lobby.type.DatabaseType
 import net.projecttl.lobby.type.ProxyType
+import net.projecttl.lobby.ui.UIHandler
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.Logger
 import java.io.File
@@ -39,10 +40,10 @@ suspend fun main() {
 		val config = File("config")
 		if (!config.exists()) {
 			config.mkdir()
-			val configFile = File("config", "data.db")
+			val cnf = File("config", "data.db")
 
 			withContext(Dispatchers.IO) {
-				configFile.createNewFile()
+				cnf.createNewFile()
 			}
 		}
 	}
@@ -50,6 +51,7 @@ suspend fun main() {
 	database = kernel.database
 	tabListService = TabListService(database)
 
+	UIHandler.run(kernel.handler)
 	Listener.run(kernel.handler)
 	TabList.run()
 

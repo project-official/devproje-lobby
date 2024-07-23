@@ -69,8 +69,6 @@ object Config {
 	val level_name: String by useConfig()
 	private val default_spawn: String by useConfig()
 	val defaultSpawn = parsePos(default_spawn)
-	private val boss_bar: String by useConfig()
-	val bossBar = parseBossBar(boss_bar)
 
 	private val database_type: String by useConfig()
 	val dbType = parseDBType(database_type)
