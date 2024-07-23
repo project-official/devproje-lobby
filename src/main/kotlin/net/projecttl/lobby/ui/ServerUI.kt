@@ -88,7 +88,7 @@ private val gonnyon = ItemData(
 		set(ItemComponent.ITEM_NAME, "<green>곤뇬 야생서버".toMini())
 		set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUuid("94dd9aea-fc4f-4ee5-a592-a7ee1ab10b4d")!!))
 		lore(listOf(
-			"<green>7/26/2024 오후 3시 오픈예정".toMini(),
+			"<reset><green>7/24/2024 오후 7시 오픈예정".toMini(),
 			"<yellow>Comming Soon!".toMini()
 		))
 	}.build()) {
