@@ -39,46 +39,46 @@ private val default = ItemData(ItemStack.builder(Material.PLAYER_HEAD).apply {
 		"<yellow>Comming Soon!".toMini()
 	))
 }.build()) {
-	GlobalScope.launch {
-		var bar: BossBar
-		var progress = 0.0f
-		for (i in 3 downTo 1) {
-			if (!it.isOnline) {
-				return@launch
-			}
+//	GlobalScope.launch {
+//		var bar: BossBar
+//		var progress = 0.0f
+//		for (i in 3 downTo 1) {
+//			if (!it.isOnline) {
+//				return@launch
+//			}
+//
+//			bar = BossBar.bossBar(
+//				"${i}초 후에 <aqua>\"프젝 놀이터\"<reset>서버로 이동 합니다".toMini(),
+//				progress,
+//				BossBar.Color.GREEN,
+//				BossBar.Overlay.PROGRESS
+//			)
+//
+//			it.showBossBar(bar)
+//			delay(1000)
+//			progress += 0.5f
+//			it.hideBossBar(bar)
+//		}
 
-			bar = BossBar.bossBar(
-				"${i}초 후에 <aqua>\"프젝 놀이터\"<reset>서버로 이동 합니다".toMini(),
-				progress,
-				BossBar.Color.GREEN,
-				BossBar.Overlay.PROGRESS
-			)
+//		it.sendMessage("<aqua>\"프젝 놀이터\"<reset>로 전송 중...".toMini())
+//		it.moveServer("playground")
 
-			it.showBossBar(bar)
-			delay(1000)
-			progress += 0.5f
-			it.hideBossBar(bar)
-		}
+//		for (i in 0..10) {
+//			if (!it.isOnline) {
+//				logger.info("${it.username} is sent for <aqua>\"프젝 놀이터\"<reset> server")
+//				return@launch
+//			}
+//
+//			delay(1000)
+//		}
+//
+//		it.sendMessage("""
+//			<red>현재 <aqua>"프젝 놀이터" <red>서버에 문제가 발생 하였습니다.
+//			문제가 지속될 경우 디스코드 <yellow>wh64<red>로 문의 바랍니다.
+//		""".trimIndent().toMini())
+//	}
 
-		it.sendMessage("<aqua>\"프젝 놀이터\"<reset>로 전송 중...".toMini())
-		it.moveServer("playground")
-
-
-		for (i in 0..30) {
-			if (!it.isOnline) {
-				logger.info("${it.username} is sent for <aqua>\"프젝 놀이터\"<reset> server")
-				return@launch
-			}
-
-			delay(1000)
-		}
-
-		it.sendMessage("""
-			<red>현재 <aqua>"프젝 놀이터" <red>서버에 문제가 발생 하였습니다.
-			문제가 지속될 경우 디스코드 <yellow>wh64<red>로 문의 바랍니다.
-		""".trimIndent().toMini())
-	}
-
+	it.sendMessage("<red>준비중인 서버예요. 오픈까지 기다려 주세요!".toMini())
 	it.closeInventory()
 }
 
@@ -88,8 +88,8 @@ private val gonnyon = ItemData(
 		set(ItemComponent.ITEM_NAME, "<green>곤뇬 야생서버".toMini())
 		set(ItemComponent.PROFILE, HeadProfile(PlayerSkin.fromUuid("94dd9aea-fc4f-4ee5-a592-a7ee1ab10b4d")!!))
 		lore(listOf(
-			"<reset><green>7/24/2024 오후 7시 오픈예정".toMini(),
-			"<yellow>Comming Soon!".toMini()
+			"<yellow>곤뇬 박물관 전용 마인크레프트 서버다".toMini(),
+			"<red>Whitelist Required".toMini()
 		))
 	}.build()) {
 	GlobalScope.launch {
@@ -116,7 +116,7 @@ private val gonnyon = ItemData(
 		it.sendMessage("<green>\"곤뇬 야생서버\"<reset>로 전송 중...".toMini())
 		it.moveServer("gonnyon")
 
-		for (i in 0..30) {
+		for (i in 0..10) {
 			if (!it.isOnline) {
 				logger.info("${it.username} is sent for <green>\"프젝 놀이터\"<reset> server")
 				return@launch
